@@ -1,0 +1,21 @@
+platform :ios, '10.0'
+
+target 'First iOS Animation Challenge' do
+    # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+    use_frameworks!
+    
+    # Pods for First iOS Animation Challenge
+    pod 'RxSwift'
+    pod 'RxCocoa'
+    
+end
+
+target 'First iOS Animation ChallengeTests' do
+    inherit! :search_paths
+    # Pods for testing
+end
+
+target 'First iOS Animation ChallengeUITests' do
+    inherit! :search_paths
+    # Pods for testing
+end

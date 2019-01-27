@@ -1,0 +1,6 @@
+framework module Pods_First_iOS_Animation_ChallengeTests {
+  umbrella header "Pods-First iOS Animation ChallengeTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
