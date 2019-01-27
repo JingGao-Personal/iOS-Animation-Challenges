@@ -106,13 +106,6 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		8C413A7E21FD802D00A2502C /* Features */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Features;
-			sourceTree = "<group>";
-		};
 		DC92BA0521FD7DFE00AAD433 = {
 			isa = PBXGroup;
 			children = (
@@ -139,7 +132,6 @@
 			isa = PBXGroup;
 			children = (
 				DC92BA1121FD7DFE00AAD433 /* AppDelegate.swift */,
-				8C413A7E21FD802D00A2502C /* Features */,
 				DC92BA1321FD7DFE00AAD433 /* HomeViewController.swift */,
 				8C413A7D21FD801E00A2502C /* Resources */,
 				DC92BA1D21FD7E0000AAD433 /* Info.plist */,

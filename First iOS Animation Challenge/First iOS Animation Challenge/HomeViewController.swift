@@ -14,10 +14,25 @@ final class HomeViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     
-    private lazy var iconImageView: UIImageView = {
+    private lazy var maskLayer: CAShapeLayer = {
+        let _maskLayer = CAShapeLayer()
+        _maskLayer.path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: 50, height: 50)).cgPath
+        _maskLayer.fillColor = #colorLiteral(red: 0.9529411765, green: 0.9647058824, blue: 0.968627451, alpha: 1).cgColor
+        return _maskLayer
+    }()
+    
+    private lazy var pinkImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .red
+        imageView.image = UIImage(named: "pinkHeart")
+        
+        return imageView
+    }()
+    
+    private lazy var whiteImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "whiteHeart")
         
         return imageView
     }()
@@ -39,7 +54,9 @@ final class HomeViewController: UIViewController {
         navigationItem.title = "Searching Bar Animation"
         view.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9647058824, blue: 0.968627451, alpha: 1)
         
-        view.addSubview(iconImageView)
+        view.addSubview(pinkImageView)
+        pinkImageView.layer.addSublayer(maskLayer)
+        view.addSubview(whiteImageView)
         view.addSubview(tableView)
         
         layoutScreen()
@@ -48,10 +65,14 @@ final class HomeViewController: UIViewController {
     
     private func layoutScreen() {
         NSLayoutConstraint.activate([
-            iconImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 25),
-            iconImageView.widthAnchor.constraint(equalToConstant: 50),
-            iconImageView.heightAnchor.constraint(equalToConstant: 50),
-            iconImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            whiteImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 25),
+            whiteImageView.widthAnchor.constraint(equalToConstant: 50),
+            whiteImageView.heightAnchor.constraint(equalToConstant: 50),
+            whiteImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            pinkImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 25),
+            pinkImageView.widthAnchor.constraint(equalToConstant: 50),
+            pinkImageView.heightAnchor.constraint(equalToConstant: 50),
+            pinkImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
             tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
             tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
@@ -69,6 +90,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func animateIconImageView() {
+        
     }
 }
 
