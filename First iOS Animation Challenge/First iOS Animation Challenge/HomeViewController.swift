@@ -12,7 +12,8 @@ import RxCocoa
 
 final class HomeViewController: UIViewController {
     
-    private static var threshold: CGFloat { return 100 }
+    private let threshold: CGFloat = 100
+    private let maxScale: CGFloat = 1.3
     private let imageViewHeight: CGFloat = 50
     
     private let disposeBag = DisposeBag()
@@ -104,9 +105,18 @@ final class HomeViewController: UIViewController {
         
         guard yOffset >= 0 else { return }
         
-        let percentage = 1 - yOffset / HomeViewController.threshold
-        let targetHeight = min(imageViewHeight, imageViewHeight * percentage)
-        maskLayer.path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: 50, height: targetHeight)).cgPath
+        if yOffset >= threshold {
+            // enlarge the image View
+            let dynamicScale: CGFloat = min(yOffset / threshold, maxScale)
+            
+            whiteImageView.transform = CGAffineTransform(scaleX: dynamicScale, y: dynamicScale)
+            pinkImageView.transform = CGAffineTransform(scaleX: dynamicScale, y: dynamicScale)
+        } else {
+            // fill the heart
+            let percentage = 1 - yOffset / threshold
+            let targetHeight = imageViewHeight * percentage
+            maskLayer.path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: 50, height: targetHeight)).cgPath
+        }
     }
 }
 
