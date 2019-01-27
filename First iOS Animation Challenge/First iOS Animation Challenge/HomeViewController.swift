@@ -12,12 +12,23 @@ import RxCocoa
 
 final class HomeViewController: UIViewController {
     
+    private static var threshold: CGFloat { return 100 }
+    private let imageViewHeight: CGFloat = 50
+    
     private let disposeBag = DisposeBag()
     
     private lazy var maskLayer: CAShapeLayer = {
         let _maskLayer = CAShapeLayer()
-        _maskLayer.path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: 50, height: 50)).cgPath
         _maskLayer.fillColor = #colorLiteral(red: 0.9529411765, green: 0.9647058824, blue: 0.968627451, alpha: 1).cgColor
+        _maskLayer.path = UIBezierPath(
+            rect: CGRect(
+                x: 0,
+                y: 0,
+                width: imageViewHeight,
+                height: imageViewHeight
+            )
+        ).cgPath
+        
         return _maskLayer
     }()
     
@@ -25,6 +36,7 @@ final class HomeViewController: UIViewController {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "pinkHeart")
+        imageView.layer.addSublayer(maskLayer)
         
         return imageView
     }()
@@ -55,7 +67,6 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9647058824, blue: 0.968627451, alpha: 1)
         
         view.addSubview(pinkImageView)
-        pinkImageView.layer.addSublayer(maskLayer)
         view.addSubview(whiteImageView)
         view.addSubview(tableView)
         
@@ -66,12 +77,12 @@ final class HomeViewController: UIViewController {
     private func layoutScreen() {
         NSLayoutConstraint.activate([
             whiteImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 25),
-            whiteImageView.widthAnchor.constraint(equalToConstant: 50),
-            whiteImageView.heightAnchor.constraint(equalToConstant: 50),
+            whiteImageView.widthAnchor.constraint(equalToConstant: imageViewHeight),
+            whiteImageView.heightAnchor.constraint(equalToConstant: imageViewHeight),
             whiteImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             pinkImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 25),
-            pinkImageView.widthAnchor.constraint(equalToConstant: 50),
-            pinkImageView.heightAnchor.constraint(equalToConstant: 50),
+            pinkImageView.widthAnchor.constraint(equalToConstant: imageViewHeight),
+            pinkImageView.heightAnchor.constraint(equalToConstant: imageViewHeight),
             pinkImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
             tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
@@ -82,15 +93,20 @@ final class HomeViewController: UIViewController {
     
     private func bindings() {
         tableView.rx.didScroll
-            .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 self?.animateIconImageView()
             })
-            .dispose()
+            .disposed(by: disposeBag)
     }
     
     private func animateIconImageView() {
+        let yOffset = tableView.contentOffset.y * -1
         
+        guard yOffset >= 0 else { return }
+        
+        let percentage = 1 - yOffset / HomeViewController.threshold
+        let targetHeight = min(imageViewHeight, imageViewHeight * percentage)
+        maskLayer.path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: 50, height: targetHeight)).cgPath
     }
 }
 
